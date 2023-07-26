@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -12,10 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -25,12 +21,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.example.entain.api.pojos.AdvertisedStart
 import com.example.entain.api.pojos.RaceDetails
+import java.util.Date
+import kotlinx.coroutines.delay
 
 @Composable
 fun RacesScreen(vm:RacesViewModel){
@@ -85,18 +81,18 @@ fun RacesList(vm:RacesViewModel){
             modifier = Modifier.padding(top = 20.dp)
         ) {
             items(items = data.value){raceDetailsDisplay->
-                SingleRaceComposable(raceDetailsDisplay)
+                SingleRaceComposable(raceDetailsDisplay,vm)
             }
         }
     }
     LaunchedEffect(key1 = Unit ){
-        vm.doStuff()
+        vm.fetchLatestData()
     }
 }
 
 @Composable
-@Preview
-fun SingleRaceComposable(@PreviewParameter(DummyRaceDetailsPreviewProvider::class)  raceDetailsDisplay: RaceDetailsDisplay,
+fun SingleRaceComposable(raceDetailsDisplay: RaceDetailsDisplay,
+                         vm:RacesViewModel,
                          modifier:Modifier = Modifier){
     Column(
         modifier = modifier
@@ -109,10 +105,36 @@ fun SingleRaceComposable(@PreviewParameter(DummyRaceDetailsPreviewProvider::clas
             .padding(dimensionResource(id = R.dimen.dp15)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AppText(raceDetailsDisplay.raceDetails.raceName)
-        AppText(raceDetailsDisplay.raceDetails.venueName)
+        AppText("Meeting name: ${raceDetailsDisplay.raceDetails.meetingName}")
+        AppText("Race no: ${raceDetailsDisplay.raceDetails.raceNumber}")
         AppText(raceDetailsDisplay.startTime)
         AppText(raceDetailsDisplay.raceCategory.name)
+
+        val now = Date()
+        var timeInMillis = raceDetailsDisplay.raceDetails.advertisedStart.seconds.toLong()*1000L
+        val raceDate = Date(timeInMillis)
+
+        var timer = remember { mutableStateOf((raceDate.time-now.time)/1000) }
+        LaunchedEffect(key1 = raceDetailsDisplay.raceDetails.raceId) {
+            while (true) {
+                if(timer.value > -60){
+                    delay(1000)
+                    timer.value -= 1
+                }else{
+                    vm.fetchLatestData()
+                    break
+                }
+            }
+        }
+        if(timer.value > 0){
+            AppText(
+                text = "timer ${timer.value}"
+            )
+        }else{
+            AppText(
+                text = "Game started"
+            )
+        }
     }
 
 }

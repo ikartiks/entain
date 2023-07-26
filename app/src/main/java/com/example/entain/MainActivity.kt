@@ -31,7 +31,6 @@ class MainActivity : ComponentActivity(), KoinComponent {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
                     RacesScreen(vm = vm)
                 }
             }

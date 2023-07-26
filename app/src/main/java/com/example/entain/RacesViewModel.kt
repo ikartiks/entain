@@ -1,6 +1,5 @@
 package com.example.entain
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.entain.api.APIResponse
@@ -14,13 +13,12 @@ class RacesViewModel(private val raceRepo: RaceRepo) : ViewModel(), KoinComponen
 
     val racesFlow = MutableStateFlow<List<RaceDetailsDisplay>>(arrayListOf())
     var filter = MutableStateFlow(RaceCategory.NONE)
-    fun doStuff(){
+    fun fetchLatestData(){
         viewModelScope.launch {
-            val response = raceRepo.getSortedRaces()
-            when(response){
+            when(val response = raceRepo.getSortedRaces()){
                 is APIResponse.Success->{
                     val raceList = response.data as ArrayList<RaceDetails>
-                    val allRaces = raceList.map { it.toDisplay() }.filter { it.hasPassed }
+                    val allRaces = raceList.map { it.toDisplay() }.filter { !it.hasPassed }
                     var filteredList = allRaces
                     if(filter.value!=RaceCategory.NONE){
                         filteredList = allRaces.filter { it.raceCategory == filter.value }
@@ -36,6 +34,6 @@ class RacesViewModel(private val raceRepo: RaceRepo) : ViewModel(), KoinComponen
 
     fun updateFilter(raceCategory: RaceCategory){
         filter.value = raceCategory
-        doStuff()
+        fetchLatestData()
     }
 }

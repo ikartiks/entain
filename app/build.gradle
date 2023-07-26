@@ -46,7 +46,7 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
-    //to run Junit5 / jupiter tests
+
     testOptions {
         unitTests.all {
             useJUnitPlatform()
@@ -85,7 +85,6 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$versions.nav"
 
     //RX
-    // for rx retrofit
     implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
     implementation "io.reactivex.rxjava3:rxkotlin:$versions.rx_kotlin"
     implementation "io.reactivex.rxjava3:rxandroid:$versions.rxandroid"
@@ -94,8 +93,6 @@ dependencies {
     //Coroutines start
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines"
-    //maybe later
-    //https://github.com/Kotlin/kotlinx.coroutines
 
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
 
@@ -146,19 +143,14 @@ dependencies {
     //koin
     testImplementation "io.insert-koin:koin-test:$versions.koin"
 
-    //https://stackoverflow.com/questions/68872301/android-studio-arctic-fox-unable-to-run-junit-configuration-with-mockk
     //mockk for junit
     testImplementation "io.mockk:mockk:$versions.mockk"
     testImplementation "io.mockk:mockk-agent-jvm:$versions.mockk"
-
-    //testImplementation group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: "$versions.kotlin"
-
+    
     testImplementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0"
     testImplementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
     testImplementation 'org.threeten:threetenbp:1.5.1'
 
-
     //coroutines
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutines"
-
 }

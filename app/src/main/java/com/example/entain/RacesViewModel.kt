@@ -19,7 +19,8 @@ class RacesViewModel(private val raceRepo: RaceRepo) : ViewModel(), KoinComponen
             when(response){
                 is APIResponse.Success->{
                     val raceList = response.data as ArrayList<RaceDetails>
-                    racesFlow.value = raceList.map { it.toDisplay() }
+                    val allRaces = raceList.map { it.toDisplay() }
+                    racesFlow.value = allRaces.filter { it.hasPassed }
                 }
                 is APIResponse.Error ->{
 

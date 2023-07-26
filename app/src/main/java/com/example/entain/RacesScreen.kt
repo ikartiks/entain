@@ -61,6 +61,7 @@ fun SingleRaceComposable(@PreviewParameter(DummyRaceDetailsPreviewProvider::clas
         AppText(raceDetailsDisplay.raceDetails.raceName)
         AppText(raceDetailsDisplay.raceDetails.venueName)
         AppText(raceDetailsDisplay.startTime)
+        AppText(raceDetailsDisplay.raceCategory.name)
     }
 
 }
@@ -72,7 +73,7 @@ class DummyRaceDetailsPreviewProvider : PreviewParameterProvider<RaceDetailsDisp
             RaceDetails("1", "Fake race name", 1,
             "asdads","asdad","1", AdvertisedStart(50000), null,
             "Au","Australia","QLD","AU"),
-            "05:01:01"
+            "05:01:01", false,RaceCategory.Harness
         )
     )
 }

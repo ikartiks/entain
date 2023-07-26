@@ -3,6 +3,7 @@ package com.example.entain
 import androidx.multidex.MultiDexApplication
 import com.example.entain.api.RaceRepo
 import com.example.entain.api.apiModule
+import com.jakewharton.threetenabp.AndroidThreeTen
 import com.kartik.grevocab.base.StartKoinInterface
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -13,6 +14,7 @@ class App : MultiDexApplication(), StartKoinInterface {
 
     override fun onCreate() {
         super.onCreate()
+        AndroidThreeTen.init(this)
         startKoin()
     }
 

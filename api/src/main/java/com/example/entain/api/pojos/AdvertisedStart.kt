@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AdvertisedStart(
 
-    @SerialName("seconds") var seconds: Int? = null
+    @SerialName("seconds") var seconds: Int
 
 )

@@ -21,47 +21,143 @@ android {
     }
 
     buildTypes {
+        debug {
+            debuggable true
+        }
         release {
+            debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    buildFeatures{
+        dataBinding = true
+        compose = true
+    }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
-    buildFeatures {
-        compose true
-    }
+
     composeOptions {
-        kotlinCompilerExtensionVersion '1.3.2'
+        kotlinCompilerExtensionVersion = "1.4.7"
     }
-    packagingOptions {
-        resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+    //to run Junit5 / jupiter tests
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
         }
     }
 }
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.0')
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
-    implementation 'androidx.activity:activity-compose:1.5.1'
-    implementation platform('androidx.compose:compose-bom:2022.10.00')
-    implementation 'androidx.compose.ui:ui'
-    implementation 'androidx.compose.ui:ui-graphics'
-    implementation 'androidx.compose.ui:ui-tooling-preview'
+    implementation "androidx.appcompat:appcompat:$versions.appcompat"
+
+    implementation "androidx.cardview:cardview:$versions.cardview"
+    implementation "androidx.recyclerview:recyclerview:$versions.recyclerview"
+    implementation "com.google.android.material:material:$versions.material"
+    implementation "androidx.constraintlayout:constraintlayout:$versions.constraintlayout"
+
+
+    implementation "androidx.multidex:multidex:$versions.multidex"
+
+    //https://stackoverflow.com/questions/49956051/warning-kotlin-plugin-version-is-not-the-same-as-library-version-but-it-is/64988522
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+    // below is required for kotlin at runtime - ActivityBase::class.qualifiedName+" "+this.localClassName, "" + message)
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$versions.kotlin"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
+
+    // Koin Core features
+    implementation "io.insert-koin:koin-core:$versions.koin"
+    // Koin main features for Android
+    implementation "io.insert-koin:koin-android:$versions.koin"
+    // No more koin-android-viewmodel, koin-android-scope, koin-android-fragment
+
+    // Java Compatibility
+    implementation "io.insert-koin:koin-android-compat:$versions.koin"
+    // Jetpack WorkManager
+    implementation "io.insert-koin:koin-androidx-workmanager:$versions.koin"
+    // Navigation Graph
+    implementation "io.insert-koin:koin-androidx-navigation:$versions.koin"
+
+    // Jetpack Compose
+    implementation "io.insert-koin:koin-androidx-compose:$versions.koin"
+
+    // Koin for Ktor
+    implementation "io.insert-koin:koin-ktor:$versions.koin"
+
+    // Navigation components support
+    implementation "androidx.navigation:navigation-fragment-ktx:$versions.nav"
+    implementation "androidx.navigation:navigation-ui-ktx:$versions.nav"
+
+    // Testing Navigation not needed yet
+    // androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+
+    implementation "com.airbnb.android:lottie:$versions.lottie"
+
+    //RX
+    // for rx retrofit
+    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
+    implementation "io.reactivex.rxjava3:rxkotlin:$versions.rx_kotlin"
+    implementation "io.reactivex.rxjava3:rxandroid:$versions.rxandroid"
+
+
+    //Coroutines start
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines"
+    //maybe later
+    //https://github.com/Kotlin/kotlinx.coroutines
+
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
+
+    //Coroutines end
+
+    implementation project(":api")
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
+
+
+    implementation "androidx.work:work-runtime-ktx:$versions.work_version"
+
+
+
+    // Compose start
+    def composeBom = platform('androidx.compose:compose-bom:2023.01.00')
+    implementation composeBom
+    androidTestImplementation composeBom
+
+    // Material Design 3
     implementation 'androidx.compose.material3:material3'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation platform('androidx.compose:compose-bom:2022.10.00')
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
+
+    // Android Studio Preview support
+    implementation 'androidx.compose.ui:ui-tooling-preview'
     debugImplementation 'androidx.compose.ui:ui-tooling'
-    debugImplementation 'androidx.compose.ui:ui-test-manifest'
+
+    // custom design system based on Foundation)
+    implementation 'androidx.compose.material:material-icons-core'
+    // Optional - Add full set of material icons
+    implementation 'androidx.compose.material:material-icons-extended'
+    // Optional - Add window size utils
+    implementation 'androidx.compose.material3:material3-window-size-class'
+
+    // Optional - Integration with activities
+    implementation 'androidx.activity:activity-compose:1.7.2'
+    // Optional - Integration with ViewModels
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1'
+    // Optional - Integration with LiveData
+    implementation 'androidx.compose.runtime:runtime-livedata'
+
+    implementation "androidx.navigation:navigation-compose:$versions.nav"
+
+    // Compose end
+
+    //coroutines
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutines"
 }

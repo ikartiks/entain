@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.entain.api.APIResponse
 import com.example.entain.api.RaceRepo
 import com.example.entain.api.pojos.RaceDetails
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -15,6 +16,8 @@ class RacesViewModel(private val raceRepo: RaceRepo) : ViewModel(), KoinComponen
     var filter = MutableStateFlow(RaceCategory.NONE)
     fun fetchLatestData() {
         viewModelScope.launch {
+            racesFlow.value = arrayListOf()
+            delay(200)
             when (val response = raceRepo.getSortedRaces()) {
                 is APIResponse.Success -> {
                     val raceList = response.data as ArrayList<RaceDetails>

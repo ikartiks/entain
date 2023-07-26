@@ -1,6 +1,10 @@
 package com.example.entain
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.FlingBehavior
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
@@ -52,11 +57,10 @@ fun RadioButtonSample(vm: RacesViewModel) {
     val radioOptions = RaceCategory.values()
     val selectedOption = vm.filter.collectAsState()
 
-    Column {
+    Row (modifier= Modifier.horizontalScroll(rememberScrollState())){
         radioOptions.forEach { raceCategory ->
             Row(
                 Modifier
-                    .fillMaxWidth()
                     .selectable(
                         selected = (raceCategory == selectedOption.value),
                         onClick = {
@@ -93,7 +97,9 @@ fun RacesList(vm: RacesViewModel) {
         }
     }else{
         Column(
-            modifier= Modifier.fillMaxWidth().fillMaxHeight(),
+            modifier= Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally) {
             val strokeWidth = 5.dp

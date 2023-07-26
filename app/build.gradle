@@ -137,6 +137,29 @@ dependencies {
 
     // Compose end
 
+    //junit 5
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$versions.jupiter_junit_5")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$versions.jupiter_junit_5")
+
+    // for InstantTaskExecutorRule
+    testImplementation 'androidx.arch.core:core-testing:2.2.0'
+
+    //koin
+    testImplementation "io.insert-koin:koin-test:$versions.koin"
+
+    //https://stackoverflow.com/questions/68872301/android-studio-arctic-fox-unable-to-run-junit-configuration-with-mockk
+    //mockk for junit
+    testImplementation "io.mockk:mockk:$versions.mockk"
+    testImplementation "io.mockk:mockk-agent-jvm:$versions.mockk"
+
+    //testImplementation group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: "$versions.kotlin"
+
+    testImplementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0"
+    testImplementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
+    testImplementation 'org.threeten:threetenbp:1.5.1'
+
+
     //coroutines
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutines"
+
 }

@@ -13,26 +13,27 @@ class RacesViewModel(private val raceRepo: RaceRepo) : ViewModel(), KoinComponen
 
     val racesFlow = MutableStateFlow<List<RaceDetailsDisplay>>(arrayListOf())
     var filter = MutableStateFlow(RaceCategory.NONE)
-    fun fetchLatestData(){
+    fun fetchLatestData() {
         viewModelScope.launch {
-            when(val response = raceRepo.getSortedRaces()){
-                is APIResponse.Success->{
+            when (val response = raceRepo.getSortedRaces()) {
+                is APIResponse.Success -> {
                     val raceList = response.data as ArrayList<RaceDetails>
                     val allRaces = raceList.map { it.toDisplay() }.filter { !it.hasPassed }
                     var filteredList = allRaces
-                    if(filter.value!=RaceCategory.NONE){
+                    if (filter.value != RaceCategory.NONE) {
                         filteredList = allRaces.filter { it.raceCategory == filter.value }
                     }
                     racesFlow.value = filteredList.take(5)
                 }
-                is APIResponse.Error ->{
+
+                is APIResponse.Error -> {
 
                 }
             }
         }
     }
 
-    fun updateFilter(raceCategory: RaceCategory){
+    fun updateFilter(raceCategory: RaceCategory) {
         filter.value = raceCategory
         fetchLatestData()
     }

@@ -29,7 +29,7 @@ import java.util.Date
 import kotlinx.coroutines.delay
 
 @Composable
-fun RacesScreen(vm:RacesViewModel){
+fun RacesScreen(vm: RacesViewModel) {
 
     Column(modifier = Modifier.padding(20.dp)) {
         RadioButtonSample(vm)
@@ -39,7 +39,7 @@ fun RacesScreen(vm:RacesViewModel){
 }
 
 @Composable
-fun RadioButtonSample(vm:RacesViewModel) {
+fun RadioButtonSample(vm: RacesViewModel) {
 
     AppText("Filters:")
     val radioOptions = RaceCategory.values()
@@ -64,7 +64,7 @@ fun RadioButtonSample(vm:RacesViewModel) {
                 )
                 AppText(
                     text = raceCategory.name,
-                    modifier = Modifier.padding(start = 16.dp,top= 10.dp)
+                    modifier = Modifier.padding(start = 16.dp, top = 10.dp)
                 )
             }
         }
@@ -72,28 +72,30 @@ fun RadioButtonSample(vm:RacesViewModel) {
 }
 
 @Composable
-fun RacesList(vm:RacesViewModel){
+fun RacesList(vm: RacesViewModel) {
 
     val data = vm.racesFlow.collectAsState()
-    if(data.value.isNotEmpty()){
+    if (data.value.isNotEmpty()) {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.dp10)),
             modifier = Modifier.padding(top = 20.dp)
         ) {
-            items(items = data.value){raceDetailsDisplay->
-                SingleRaceComposable(raceDetailsDisplay,vm)
+            items(items = data.value) { raceDetailsDisplay ->
+                SingleRaceComposable(raceDetailsDisplay, vm)
             }
         }
     }
-    LaunchedEffect(key1 = Unit ){
+    LaunchedEffect(key1 = Unit) {
         vm.fetchLatestData()
     }
 }
 
 @Composable
-fun SingleRaceComposable(raceDetailsDisplay: RaceDetailsDisplay,
-                         vm:RacesViewModel,
-                         modifier:Modifier = Modifier){
+fun SingleRaceComposable(
+    raceDetailsDisplay: RaceDetailsDisplay,
+    vm: RacesViewModel,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier
             .background(
@@ -111,26 +113,26 @@ fun SingleRaceComposable(raceDetailsDisplay: RaceDetailsDisplay,
         AppText(raceDetailsDisplay.raceCategory.name)
 
         val now = Date()
-        var timeInMillis = raceDetailsDisplay.raceDetails.advertisedStart.seconds.toLong()*1000L
+        var timeInMillis = raceDetailsDisplay.raceDetails.advertisedStart.seconds.toLong() * 1000L
         val raceDate = Date(timeInMillis)
 
-        var timer = remember { mutableStateOf((raceDate.time-now.time)/1000) }
+        var timer = remember { mutableStateOf((raceDate.time - now.time) / 1000) }
         LaunchedEffect(key1 = raceDetailsDisplay.raceDetails.raceId) {
             while (true) {
-                if(timer.value > -60){
+                if (timer.value > -60) {
                     delay(1000)
                     timer.value -= 1
-                }else{
+                } else {
                     vm.fetchLatestData()
                     break
                 }
             }
         }
-        if(timer.value > 0){
+        if (timer.value > 0) {
             AppText(
                 text = "timer ${timer.value}"
             )
-        }else{
+        } else {
             AppText(
                 text = "Game started"
             )
@@ -143,10 +145,12 @@ class DummyRaceDetailsPreviewProvider : PreviewParameterProvider<RaceDetailsDisp
 
     override val values = sequenceOf(
         RaceDetailsDisplay(
-            RaceDetails("1", "Fake race name", 1,
-            "asdads","asdad","1", AdvertisedStart(50000), null,
-            "Au","Australia","QLD","AU"),
-            "05:01:01", false,RaceCategory.Harness
+            RaceDetails(
+                "1", "Fake race name", 1,
+                "asdads", "asdad", "1", AdvertisedStart(50000), null,
+                "Au", "Australia", "QLD", "AU"
+            ),
+            "05:01:01", false, RaceCategory.Harness
         )
     )
 }

@@ -1,7 +1,6 @@
 package com.example.entain
 
 import androidx.multidex.MultiDexApplication
-import com.example.entain.api.RaceRepo
 import com.example.entain.api.apiModule
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.kartik.grevocab.base.StartKoinInterface
@@ -21,7 +20,7 @@ class App : MultiDexApplication(), StartKoinInterface {
     override fun startKoin() {
         startKoin {
             androidContext(this@App)
-            modules( apiModule, myModule)
+            modules(apiModule, myModule)
         }
     }
 }

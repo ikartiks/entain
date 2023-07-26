@@ -30,7 +30,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    buildFeatures{
+    buildFeatures {
         dataBinding = true
         compose = true
     }
@@ -104,7 +104,6 @@ dependencies {
     implementation project(":api")
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
     implementation "androidx.work:work-runtime-ktx:$versions.work_version"
-
 
 
     // Compose start

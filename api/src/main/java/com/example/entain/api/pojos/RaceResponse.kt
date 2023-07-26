@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class Whatever(
+data class RaceResponse(
     var status: Int,
     var data: Data,
     var message: String

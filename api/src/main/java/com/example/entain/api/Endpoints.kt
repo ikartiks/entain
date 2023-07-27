@@ -6,6 +6,6 @@ import retrofit2.http.GET
 
 interface Endpoints {
 
-    @GET("/rest/v1/racing/?method=nextraces&count=10")
+    @GET("/rest/v1/racing/?method=nextraces&count=30")
     suspend fun getRaces(): Response<RaceResponse>
 }
